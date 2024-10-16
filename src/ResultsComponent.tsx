@@ -42,7 +42,7 @@ const ResultsComponent: React.FC<ResultsComponentProps> = ({
 
   const handleTossLinkClick = () => {
     const tossLink =
-      "intent://send?param=value#Intent;scheme=toss;package=vn.toss;end"; // QR 코드에서 추출한 토스 링크
+      "supertoss://send?amount=1000&bank=%ED%86%A0%EC%8A%A4%EB%B1%85%ED%81%AC&accountNo=100000243206&origin=qr"; // QR 코드에서 추출한 토스 링크
   
     // 모바일 기기인지 확인
     if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
