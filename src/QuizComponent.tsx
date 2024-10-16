@@ -216,18 +216,19 @@ const QuizComponent: React.FC<QuizComponentProps> = ({ onFinish }) => {
             <Typography
                 variant="body2"
                 style={{
-                    position: 'absolute',
-                    bottom: '0px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    padding: '10px',
-                    fontSize: '0.875rem',
-                    color: '#666',
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
+                    position: 'fixed',  // 'absolute'에서 'fixed'로 변경
+                    bottom: '0px',  // 화면 하단에 고정
+                    left: '50%',  // 수평 가운데 정렬
+                    transform: 'translateX(-50%)',  // 정확한 가운데 정렬
+                    padding: '10px',  // 약간의 패딩 추가
+                    fontSize: '0.875rem',  // 텍스트 크기 조정
+                    color: '#666',  // 텍스트 색상 조정
+                    whiteSpace: 'nowrap',  // 텍스트 줄바꿈 방지
+                    overflow: 'hidden',  // 내용이 넘칠 경우 숨김
+                    textOverflow: 'ellipsis',  // 넘칠 경우 '...' 표시
+                    backgroundColor: 'rgba(255, 255, 255, 0.9)',  // 배경 색상 (선택)
                 }}
-            >
+                >
                 © 2024 사주읽는 치히로 All Rights Reserved.
             </Typography>
         </Paper>
