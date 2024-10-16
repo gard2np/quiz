@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import { Button, Typography, Paper, List, ListItem, ListItemText, Divider, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 
 interface IncorrectQuestion {
@@ -14,6 +14,7 @@ interface ResultsComponentProps {
 }
 
 const ResultsComponent: React.FC<ResultsComponentProps> = ({ score, totalQuestions, incorrectQuestions }) => {
+
     const [open, setOpen] = useState(false);  // 모달 열림/닫힘 상태 관리
 
     const handleClickOpen = () => {
@@ -24,14 +25,14 @@ const ResultsComponent: React.FC<ResultsComponentProps> = ({ score, totalQuestio
         setOpen(false);  // 모달 닫기
     };
 
+
     return (
-        <Paper elevation={0} style={{
+        <Paper elevation={3} style={{
             padding: 40,
-            display: 'flex',
+            display: "block",
             flexDirection: 'column',
-            justifyContent: 'center',  // 하단 정렬
-            minHeight: '80vh',  // 화면 전체 높이 사용
-            paddingBottom: '20px',  // 하단에서 50px 여백
+            alignItems: 'center',  // 수평 가운데 정렬
+            minHeight: '100vh',  // 페이지 전체 높이 사용
         }}>
             <Typography variant="h4" gutterBottom style={{ fontWeight: "bold" }}>
                 퀴즈 결과
@@ -42,7 +43,7 @@ const ResultsComponent: React.FC<ResultsComponentProps> = ({ score, totalQuestio
             </Typography>
 
             <Typography variant="h6" style={{ marginTop: 20, marginBottom: 10 }}>
-                틀린 문제
+                틀린 문제 목록
             </Typography>
 
             {incorrectQuestions.length === 0 ? (
@@ -62,6 +63,7 @@ const ResultsComponent: React.FC<ResultsComponentProps> = ({ score, totalQuestio
                     ))}
                 </List>
             )}
+
             <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <Button
                     variant="contained"
@@ -83,8 +85,9 @@ const ResultsComponent: React.FC<ResultsComponentProps> = ({ score, totalQuestio
 
             {/* 모달 (Dialog) 컴포넌트 */}
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>후원 안내</DialogTitle>
-                        <img src = "/qr_toss.png" alt="toss"></img>
+                <DialogTitle style={{fontWeight:"bold"}}>후원 안내</DialogTitle>
+                <Typography variant="h4" style={{ display: "flex", justifyContent: "center" }}><img src = "/qr_only.png" alt="toss" height={"80%"} width={"80%"} ></img></Typography>
+                        <Typography variant="h4" style={{ display: "flex", justifyContent: "center" }}>1,000원</Typography>
                 <DialogContent>
                     <Typography>
                         본 콘텐츠가 유익하셨다면 후원하실 수 있습니다. 스마트폰 카메라로 QR코드를 스캔하면 토스로 연결됩니다.
@@ -96,17 +99,31 @@ const ResultsComponent: React.FC<ResultsComponentProps> = ({ score, totalQuestio
                     </Button>
                 </DialogActions>
             </Dialog>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+            <Button
+                
+                variant="contained"
+                color="warning"
+                style={{ marginTop: 20, width: "100vw"}}
+                onClick={() => window.location.reload()}
 
+            >
+                다시 시작하기
+            </Button>
+            </div>
             <Typography
                 variant="body2"
                 style={{
-                    paddingTop: "100px",
-                    textAlign: 'center',
+                    position: 'relative',
+                    paddingTop: '50px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    padding: '10px',
                     fontSize: '0.875rem',
                     color: '#666',
-                    whiteSpace: 'nowrap',  // 텍스트 줄바꿈 방지
-                    overflow: 'hidden',  // 내용이 넘칠 경우 숨김
-                    textOverflow: 'ellipsis',  // 정확한 가운데 정렬
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
                 }}
             >
                 © 2024 사주읽는 치히로 All Rights Reserved.

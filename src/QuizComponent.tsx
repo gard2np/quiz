@@ -95,17 +95,25 @@ interface QuizComponentProps {
 }
 
 const QuizComponent: React.FC<QuizComponentProps> = ({ onFinish }) => {
-    const totalQuestions = 10; // 총 문제 수
+    const totalQuestions = 10;
     const [currentQuiz, setCurrentQuiz] = useState({ dayStem: "", other: "" });
     const [userAnswer, setUserAnswer] = useState("");
     const [score, setScore] = useState(0);
     const [message, setMessage] = useState("");
     const [questionNumber, setQuestionNumber] = useState(1);
     const [incorrectQuestions, setIncorrectQuestions] = useState<IncorrectQuestion[]>([]);
+    const [quizFinished, setQuizFinished] = useState(false); // 퀴즈 종료 상태 관리
 
     useEffect(() => {
         generateQuiz();
     }, []);
+
+    useEffect(() => {
+        // 퀴즈가 종료되었을 때 결과 전달
+        if (quizFinished) {
+            onFinish(score, incorrectQuestions);
+        }
+    }, [quizFinished, score, incorrectQuestions, onFinish]);
 
     const generateQuiz = () => {
         const dayStem = heavenlyStems[Math.floor(Math.random() * heavenlyStems.length)];
@@ -115,11 +123,11 @@ const QuizComponent: React.FC<QuizComponentProps> = ({ onFinish }) => {
 
     const checkAnswer = () => {
         const correctAnswer = relations[currentQuiz.dayStem][currentQuiz.other];
-        let newScore = score;  // 새로운 점수를 임시로 저장할 변수
-    
+        let newScore = score;
+
         if (userAnswer === correctAnswer) {
-            newScore = score + 1;
-            setScore(newScore);  // 스코어 업데이트
+            newScore += 1;
+            setScore(newScore);
             setMessage("정답입니다!");
         } else {
             setMessage(`틀렸습니다. 정답은 ${correctAnswer}입니다.`);
@@ -128,49 +136,57 @@ const QuizComponent: React.FC<QuizComponentProps> = ({ onFinish }) => {
                 { 문제: `일간: ${currentQuiz.dayStem}, 육친: ${currentQuiz.other}`, 정답: correctAnswer, 입력한_답: userAnswer },
             ]);
         }
-    
+
         if (questionNumber < totalQuestions) {
             setQuestionNumber(questionNumber + 1);
             generateQuiz();
         } else {
-            // 마지막 문제 처리 후 onFinish 호출
-            onFinish(newScore, incorrectQuestions);
+            // 마지막 문제 처리 후 퀴즈 종료 상태로 변경
+            setQuizFinished(true);
         }
-    
-        setUserAnswer("");
+
+        setUserAnswer(""); // 입력 초기화
     };
-    // Enter 키가 눌리면 checkAnswer 실행
+
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
             checkAnswer();
         }
     };
+
     return (
-        <Paper elevation={0} style={{
-            padding: 0,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',  // 수평 가운데 정렬
-            justifyContent: 'center',  // 수직 가운데 정렬
-            minHeight: '100vh',  // 페이지 전체를 차지하게 하기 위해
-        }}>
-            <Typography variant="h4" gutterBottom style={{
-            fontWeight: "bold",
-            position: "absolute",  // 절대 좌표로 설정
-            top: '50px',  // 상단으로부터 20px 떨어진 위치에 배치
-            left: '50%',  // 수평 가운데 정렬을 위한 left 50%
-            transform: 'translateX(-50%)',
-            whiteSpace: 'nowrap',  // 텍스트 줄바꿈 방지
-            overflow: 'hidden',  // 내용이 넘칠 경우 숨김
-            textOverflow: 'ellipsis',  // 정확한 가운데 정렬
-        }}>
-              육친 암기 도우미
+        <Paper
+            elevation={0}
+            style={{
+                padding: 0,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                minHeight: '100vh',
+            }}
+        >
+            <Typography
+                variant="h4"
+                gutterBottom
+                style={{
+                    fontWeight: "bold",
+                    position: "absolute",
+                    top: '50px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                }}
+            >
+                육친 암기 도우미
             </Typography>
             <Typography variant="h6" gutterBottom>
                 [{questionNumber}/{totalQuestions}]
             </Typography>
-            <Typography variant="h5" gutterBottom >
-            일간 {currentQuiz.dayStem}일 때 {currentQuiz.other}의 육친은?
+            <Typography variant="h5" gutterBottom>
+                일간 {currentQuiz.dayStem}일 때 {currentQuiz.other}의 육친은?
             </Typography>
             <TextField
                 label="정답을 입력하세요"
@@ -179,12 +195,15 @@ const QuizComponent: React.FC<QuizComponentProps> = ({ onFinish }) => {
                 variant="outlined"
                 fullWidth
                 margin="normal"
-                onKeyDown={handleKeyDown}  // Enter 키 이벤트 핸들러 추가
-                style={{ width: '70vw'}}  // 입력칸 크기를 50vw로 설정
+                onKeyDown={handleKeyDown}
+                style={{ width: '70vw' }}
             />
-            <br/>
-            <Button variant="contained" color="primary" onClick={checkAnswer}
-            style={{ width: '40vw'}}
+            <br />
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={checkAnswer}
+                style={{ width: '40vw' }}
             >
                 제출
             </Button>
@@ -195,21 +214,21 @@ const QuizComponent: React.FC<QuizComponentProps> = ({ onFinish }) => {
                 점수: {score}
             </Typography>
             <Typography
-            variant="body2"
-            style={{
-                position: 'absolute',
-                bottom: '0px',  // 화면 하단에 배치
-                left: '50%',  // 수평 가운데 정렬
-                transform: 'translateX(-50%)',  // 정확하게 가운데 정렬
-                padding: '10px',  // 약간의 패딩 추가 (선택 사항)
-                fontSize: '0.875rem',  // 텍스트 크기 조정 (선택 사항)
-                color: '#666',  // 텍스트 색상 조정 (선택 사항)
-                whiteSpace: 'nowrap',  // 텍스트 줄바꿈 방지
-                overflow: 'hidden',  // 내용이 넘칠 경우 숨김
-                textOverflow: 'ellipsis',  // 정확한 가운데 정렬
-            }}
+                variant="body2"
+                style={{
+                    position: 'absolute',
+                    bottom: '0px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    padding: '10px',
+                    fontSize: '0.875rem',
+                    color: '#666',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                }}
             >
-            © 2024 사주읽는 치히로 All Rights Reserved.
+                © 2024 사주읽는 치히로 All Rights Reserved.
             </Typography>
         </Paper>
     );
