@@ -84,7 +84,7 @@ const ResultsComponent: React.FC<ResultsComponentProps> = ({ score, totalQuestio
             {/* 모달 (Dialog) 컴포넌트 */}
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>후원 안내</DialogTitle>
-                        <img src = "/qr_toss.png"></img>
+                        <img src = "/qr_toss.png" alt="toss"></img>
                 <DialogContent>
                     <Typography>
                         본 콘텐츠가 유익하셨다면 후원하실 수 있습니다. 스마트폰 카메라로 QR코드를 스캔하면 토스로 연결됩니다.
