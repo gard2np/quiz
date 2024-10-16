@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import QuizComponent from "./QuizComponent";
+import ResultsComponent from "./ResultsComponent";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+interface IncorrectQuestion {
+  문제: string;
+  정답: string;
+  입력한_답: string;
 }
 
-export default App;
+const QuizApp: React.FC = () => {
+    const [quizFinished, setQuizFinished] = useState(false);
+    const [score, setScore] = useState(0);
+    const [incorrectQuestions, setIncorrectQuestions] = useState<IncorrectQuestion[]>([]);
+
+    const finishQuiz = (finalScore: number, wrongQuestions: IncorrectQuestion[]) => {
+        setScore(finalScore);
+        setIncorrectQuestions(wrongQuestions);
+        setQuizFinished(true);
+    };
+
+    return (
+        <div>
+            {!quizFinished ? (
+                <QuizComponent onFinish={finishQuiz} />
+            ) : (
+                <ResultsComponent score={score} totalQuestions={10} incorrectQuestions={incorrectQuestions} />
+            )}
+        </div>
+    );
+};
+
+export default QuizApp;
