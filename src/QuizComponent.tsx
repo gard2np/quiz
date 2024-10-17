@@ -133,7 +133,7 @@ const QuizComponent: React.FC<QuizComponentProps> = ({ onFinish }) => {
             setMessage(`틀렸습니다. 정답은 ${correctAnswer}입니다.`);
             setIncorrectQuestions((prev) => [
                 ...prev,
-                { 문제: `일간: ${currentQuiz.dayStem}, 육친: ${currentQuiz.other}`, 정답: correctAnswer, 입력한_답: userAnswer },
+                { 문제: `일간: ${currentQuiz.dayStem}, 십신: ${currentQuiz.other}`, 정답: correctAnswer, 입력한_답: userAnswer },
             ]);
         }
 
@@ -180,13 +180,13 @@ const QuizComponent: React.FC<QuizComponentProps> = ({ onFinish }) => {
                     textOverflow: 'ellipsis',
                 }}
             >
-                육친 암기 도우미
+                십신 암기 도우미
             </Typography>
             <Typography variant="h6" gutterBottom>
                 [{questionNumber}/{totalQuestions}]
             </Typography>
             <Typography variant="h5" gutterBottom>
-                일간 {currentQuiz.dayStem}일 때 {currentQuiz.other}의 육친은?
+                일간 {currentQuiz.dayStem}일 때 {currentQuiz.other}의 십신은?
             </Typography>
             <TextField
                 label="정답을 입력하세요"
