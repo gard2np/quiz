@@ -114,7 +114,7 @@ const ResultsComponent: React.FC<ResultsComponentProps> = ({
           style={{ width: "35vw" }}
           onClick={() =>
             window.open(
-              "https://m.expert.naver.com/expert/profile/home?storeId=100052750&u=XpRrZdxWRa3N3VwnVzIQ%252FSMgJyXoC2IrtEGykNoZk7M%253D",
+              "https://naver.me/53lexFZd",
               "_blank"
             )
           }
